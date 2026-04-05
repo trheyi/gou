@@ -30,7 +30,7 @@ func TestBuildWheres(t *testing.T) {
 		SetAESKey(TestAESKey)
 	gou.Build()
 	sql := gou.ToSQL()
-	assert.Equal(t, Q("select `*` from `user` as `u` where `score` < ? and `score` > ? and `id` in (?,?) and (`name` like ? or `name` like ?) and `manu_id` in (select `manu_id` as `id` from `manu` where `status` = ?)"), sql)
+	assert.Equal(t, Q("select `*` from `user` as `u` where `score` < ? and `score` > ? and `id` in (?,?) and (`name` like ? or `name` like ?) and `manu_id` in (select `manu_id` AS `id` from `manu` where `status` = ?)"), sql)
 }
 
 func TestBuildOrders(t *testing.T) {
@@ -70,7 +70,7 @@ func TestBuildGroupsArray(t *testing.T) {
 	gou.Build()
 	sql := gou.ToSQL()
 	assert.Equal(t,
-		Q("select max(`score`) AS `最高分`, IF(GROUPING(`__JSON_T1`.`F1`),'所有城市',`__JSON_T1`.`F1`) AS `citys[*]`, `__JSON_T2`.`f2` as `行业`, IF(GROUPING(`__JSON_T3`.`F3`),'所有行政区',`__JSON_T3`.`F3`) AS `towns[*]`, IF(GROUPING(`__JSON_T4`.`F4`),'合计',`__JSON_T4`.`F4`) AS `goods.sku[*].price`, `__JSON_T5`.`f5` as `goods`, JSON_EXTRACT(`option`, '$.ids[*]') AS `ID` from `table` as `name` JOIN JSON_TABLE(`industries`, '$[*]' columns (`F2` VARCHAR(100) path '$') ) AS `__JSON_T2` JOIN JSON_TABLE(`citys`, '$[*]' columns (`F1` VARCHAR(50) path '$') ) AS `__JSON_T1` JOIN JSON_TABLE(`towns`, '$[*]' columns (`F3` VARCHAR(100) path '$') ) AS `__JSON_T3` JOIN JSON_TABLE(`goods`.`sku`, '$[*]' columns (`F4` DECIMAL(11,2) path '$.price') ) AS `__JSON_T4` JOIN JSON_TABLE(`goods`.`sku`, '$[*]' columns (`F5` INT path '$.gid') ) AS `__JSON_T5` group by `行业`, `ID`, `citys[*]` WITH ROLLUP, `towns[*]` WITH ROLLUP, `goods.sku[*].price` WITH ROLLUP, `goods.sku[*].gid`"),
+		Q("select max(`score`) AS `最高分`, IF(GROUPING(`__JSON_T1`.`F1`),'所有城市',`__JSON_T1`.`F1`) AS `citys[*]`, `__JSON_T2`.`F2` AS `行业`, IF(GROUPING(`__JSON_T3`.`F3`),'所有行政区',`__JSON_T3`.`F3`) AS `towns[*]`, IF(GROUPING(`__JSON_T4`.`F4`),'合计',`__JSON_T4`.`F4`) AS `goods.sku[*].price`, `__JSON_T5`.`F5` AS `goods.sku[*].gid`, JSON_EXTRACT(`option`, '$.ids[*]') AS `ID` from `table` as `name` JOIN JSON_TABLE(`industries`, '$[*]' columns (`F2` VARCHAR(100) path '$') ) AS `__JSON_T2` JOIN JSON_TABLE(`citys`, '$[*]' columns (`F1` VARCHAR(50) path '$') ) AS `__JSON_T1` JOIN JSON_TABLE(`towns`, '$[*]' columns (`F3` VARCHAR(100) path '$') ) AS `__JSON_T3` JOIN JSON_TABLE(`goods`.`sku`, '$[*]' columns (`F4` DECIMAL(11,2) path '$.price') ) AS `__JSON_T4` JOIN JSON_TABLE(`goods`.`sku`, '$[*]' columns (`F5` INT path '$.gid') ) AS `__JSON_T5` group by `行业`, `ID`, `citys[*]` WITH ROLLUP, `towns[*]` WITH ROLLUP, `goods.sku[*].price` WITH ROLLUP, `goods.sku[*].gid`"),
 		sql,
 	)
 }

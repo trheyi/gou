@@ -176,7 +176,7 @@ func (gou Query) sqlExpression(exp Expression, withDefaultAlias ...bool) interfa
 		return dbal.Raw(fmt.Sprintf("JSON_EXTRACT(%s`%s`, '$%s%s')%s", table, exp.Field, index, key, alias))
 	}
 
-	return fmt.Sprintf("%s%s%s", table, gou.Quote(exp.Field), alias)
+	return dbal.Raw(fmt.Sprintf("%s%s%s", table, gou.Quote(exp.Field), alias))
 }
 
 // sqlTypeOf 字段类型

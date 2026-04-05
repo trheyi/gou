@@ -16,6 +16,12 @@ func (gou *Query) Build() {
 		exception.New("查询条件错误", 400).Ctx(errs).Throw()
 	}
 
+	if gou.driver == "" && gou.Query != nil {
+		if driver, err := gou.Query.Driver(); err == nil {
+			gou.driver = driver
+		}
+	}
+
 	gou.buildSelect()
 	gou.buildFrom()
 	gou.buildWheres()
