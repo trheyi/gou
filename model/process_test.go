@@ -445,9 +445,6 @@ func TestProcessModelUnload(t *testing.T) {
 }
 
 func TestProcessTakeSnapshot(t *testing.T) {
-	if os.Getenv("GOU_TEST_DB_DRIVER") == "postgres" {
-		t.Skip("Snapshot: uses MySQL-specific DDL (Phase 2)")
-	}
 	prepare(t)
 	defer clean()
 	prepareTestData(t)
@@ -465,9 +462,6 @@ func TestProcessTakeSnapshot(t *testing.T) {
 }
 
 func TestProcessSnapshotExists(t *testing.T) {
-	if os.Getenv("GOU_TEST_DB_DRIVER") == "postgres" {
-		t.Skip("Snapshot: uses MySQL-specific DDL (Phase 2)")
-	}
 	prepare(t)
 	defer clean()
 	prepareTestData(t)
@@ -491,9 +485,6 @@ func TestProcessSnapshotExists(t *testing.T) {
 }
 
 func TestProcessRestoreSnapshot(t *testing.T) {
-	if os.Getenv("GOU_TEST_DB_DRIVER") == "postgres" {
-		t.Skip("Snapshot: uses MySQL-specific DDL (Phase 2)")
-	}
 	prepare(t)
 	defer clean()
 	prepareTestData(t)
@@ -516,9 +507,6 @@ func TestProcessRestoreSnapshot(t *testing.T) {
 }
 
 func TestProcessRestoreSnapshotByRename(t *testing.T) {
-	if os.Getenv("GOU_TEST_DB_DRIVER") == "postgres" {
-		t.Skip("Snapshot: uses MySQL-specific DDL (Phase 2)")
-	}
 	prepare(t)
 	defer clean()
 	prepareTestData(t)
@@ -536,9 +524,6 @@ func TestProcessRestoreSnapshotByRename(t *testing.T) {
 }
 
 func TestProcessDropSnapshot(t *testing.T) {
-	if os.Getenv("GOU_TEST_DB_DRIVER") == "postgres" {
-		t.Skip("Snapshot: uses MySQL-specific DDL (Phase 2)")
-	}
 	prepare(t)
 	defer clean()
 	prepareTestData(t)
@@ -562,9 +547,6 @@ func TestProcessDropSnapshot(t *testing.T) {
 }
 
 func TestProcessSnapshotErrors(t *testing.T) {
-	if os.Getenv("GOU_TEST_DB_DRIVER") == "postgres" {
-		t.Skip("Snapshot: uses MySQL-specific DDL (Phase 2)")
-	}
 	prepare(t)
 	defer clean()
 

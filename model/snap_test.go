@@ -1,7 +1,6 @@
 package model
 
 import (
-	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -9,14 +8,7 @@ import (
 	"github.com/yaoapp/kun/maps"
 )
 
-func skipSnapshotOnPostgres(t *testing.T) {
-	if os.Getenv("GOU_TEST_DB_DRIVER") == "postgres" {
-		t.Skip("Snapshot: uses MySQL-specific DDL (Phase 2)")
-	}
-}
-
 func TestTakeSnapshotInMemory(t *testing.T) {
-	skipSnapshotOnPostgres(t)
 	prepare(t)
 	defer clean()
 	pet := Select("pet")
@@ -36,7 +28,6 @@ func TestTakeSnapshotInMemory(t *testing.T) {
 }
 
 func TestTakeSnapshot(t *testing.T) {
-	skipSnapshotOnPostgres(t)
 	prepare(t)
 	defer clean()
 	pet := Select("pet")
@@ -56,7 +47,6 @@ func TestTakeSnapshot(t *testing.T) {
 }
 
 func TestRestoreSnapshot(t *testing.T) {
-	skipSnapshotOnPostgres(t)
 	prepare(t)
 	defer clean()
 	pet := Select("pet")
@@ -86,7 +76,6 @@ func TestRestoreSnapshot(t *testing.T) {
 }
 
 func TestRestoreSnapshotWithInMemory(t *testing.T) {
-	skipSnapshotOnPostgres(t)
 	prepare(t)
 	defer clean()
 	pet := Select("pet")
@@ -117,7 +106,6 @@ func TestRestoreSnapshotWithInMemory(t *testing.T) {
 }
 
 func TestRestoreSnapshotByRename(t *testing.T) {
-	skipSnapshotOnPostgres(t)
 	prepare(t)
 	defer clean()
 	pet := Select("pet")
