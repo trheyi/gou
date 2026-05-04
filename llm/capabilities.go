@@ -19,6 +19,32 @@ type Capabilities struct {
 	MaxOutputTokens       int         `json:"max_output_tokens,omitempty" yaml:"max_output_tokens,omitempty"`           // Maximum output tokens the model can generate
 }
 
+// HasVision reports whether the model supports vision/image input.
+// Vision is interface{} and may be bool, string (format name), or nil.
+func (c *Capabilities) HasVision() bool {
+	if c == nil || c.Vision == nil {
+		return false
+	}
+	switch v := c.Vision.(type) {
+	case bool:
+		return v
+	case string:
+		return v != ""
+	default:
+		return true
+	}
+}
+
+// HasReasoning reports whether the model supports thinking/reasoning mode.
+func (c *Capabilities) HasReasoning() bool {
+	return c != nil && c.Reasoning
+}
+
+// HasToolCalls reports whether the model supports tool/function calling.
+func (c *Capabilities) HasToolCalls() bool {
+	return c != nil && c.ToolCalls
+}
+
 // ToMap converts Capabilities to map[string]interface{} for API responses.
 // This is the canonical implementation; yao-layer wrappers should delegate here.
 func (c *Capabilities) ToMap() map[string]interface{} {
